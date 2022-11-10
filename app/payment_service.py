@@ -58,8 +58,8 @@ async def create_payment(payment_api_request: APIPaymentRequest):
     bootstrap_server = 'broker:9092'
     print(bootstrap_server)
 
-    # producer = KafkaProducer(bootstrap_servers=[bootstrap_server])
-    # future = producer.send('payment_request', bytes(payment_request.json(), 'utf-8'))
+    producer = KafkaProducer(bootstrap_servers=[bootstrap_server])
+    future = producer.send('payment_request', bytes(payment_request.json(), 'utf-8'))
 
     return payment_api_request
 

@@ -29,5 +29,5 @@ ENV KAFKA_BOOTSTRAP_PORT=9092
 
 EXPOSE 8000
 
-CMD ["python3", "payment_service.py"]
+CMD ["python3 payment_service.py"]
 #CMD ["python3", "risk_service.py"]
