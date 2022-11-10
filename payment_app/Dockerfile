@@ -12,12 +12,13 @@ ENV PATH="./venv/bin:$PATH"
 WORKDIR /usr/app
 
 RUN python -m venv /opt/venv
-COPY requirements.txt /usr/app/requirements.txt
+COPY ./payment_app/requirements.txt /usr/app/requirements.txt
 RUN pip install -r requirements.txt
 
-COPY .. .
+COPY ./payment_app .
+COPY ./common /usr/app/common
 
-#ENV PYTHONPATH="$PYTHONPATH:./..:"
+ENV PYTHONPATH="$PYTHONPATH:/usr/app:..:."
 ENV DB_HOST=postgres_db
 ENV DB_NAME=demo_db
 ENV DB_USER=demo_user

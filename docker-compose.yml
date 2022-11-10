@@ -15,8 +15,8 @@ services:
   payment_app:
     restart: always
     build:
-        context: payment_app/
-        dockerfile: Dockerfile
+        context: .
+        dockerfile: payment_app/Dockerfile
     container_name: payment_app
     ports:
       - "8000:8000"
@@ -26,12 +26,11 @@ services:
   risk_app:
     restart: always
     build:
-        context: risk_app/
-        dockerfile: Dockerfile
+        context: .
+        dockerfile: risk_app/Dockerfile
     container_name: risk_app
     volumes:
       - .:/risk_app
-
 
   postgres_db:
     container_name: postgres_db
