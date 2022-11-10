@@ -3,9 +3,9 @@ import random
 import os
 import psycopg2.errors
 from kafka import KafkaConsumer
-from models import PaymentRequest, AuthRequest
+from common.models import PaymentRequest, AuthRequest
 
-import postgres_utils
+from common import postgres_utils
 
 
 def process():

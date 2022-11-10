@@ -3,8 +3,8 @@ import uvicorn
 import os
 from uuid import uuid4
 from kafka import KafkaProducer
-from models import PaymentRequest, APIPaymentRequest, User, APIUser, PaymentMethod, APIPaymentMethod
-import postgres_utils
+from common.models import PaymentRequest, APIPaymentRequest, User, APIUser, PaymentMethod, APIPaymentMethod
+from common import postgres_utils
 from psycopg2 import connect, sql
 from psycopg2.extras import RealDictCursor, execute_values
 
@@ -12,10 +12,10 @@ from psycopg2.extras import RealDictCursor, execute_values
 /Users/ivry/development/projects/intuit_p2p/venv/bin/uvicorn --app-dir ./app payment_service:app
 """
 
-app = FastAPI()
+payment_app = FastAPI()
 
 
-@app.post('/users')
+@payment_app.post('/users')
 async def create_user(user: APIUser):
     user = User(**(user.dict() | {'user_id': uuid4()}))
     with postgres_utils.get_connection(db_schema='payment_schema') as conn:
@@ -24,12 +24,12 @@ async def create_user(user: APIUser):
     return user
 
 
-@app.get('/users')
+@payment_app.get('/users')
 async def get_users():
     return select_all('user')
 
 
-@app.post('/payment_methods')
+@payment_app.post('/payment_methods')
 async def create_payment_method(payment_method: APIPaymentMethod):
     user = PaymentMethod(**(payment_method.dict() | {'payment_method_id': uuid4()}))
     with postgres_utils.get_connection(db_schema='payment_schema') as conn:
@@ -38,12 +38,12 @@ async def create_payment_method(payment_method: APIPaymentMethod):
     return payment_method
 
 
-@app.get('/payment_methods')
+@payment_app.get('/payment_methods')
 async def get_payment_methods():
     return select_all('payment_method')
 
 
-@app.post('/payments')
+@payment_app.post('/payments')
 async def create_payment(payment_api_request: APIPaymentRequest):
     # return payment_api_request
     payment_request = PaymentRequest(**(payment_api_request.dict() | {'payment_request_id': uuid4()}))
@@ -64,7 +64,7 @@ async def create_payment(payment_api_request: APIPaymentRequest):
     return payment_api_request
 
 
-@app.get('/payments')
+@payment_app.get('/payments')
 async def get_payment_requests():
     return select_all('payment_request')
 
@@ -83,4 +83,4 @@ def select_all(table_name):
 
 
 if __name__ == '__main__':
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(payment_app, host="0.0.0.0", port=8000)
