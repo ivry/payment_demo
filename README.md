@@ -97,8 +97,8 @@ The file contains four examples for creating a user / retrieving all users, crea
 
 Note that to simplify the creation of payments, the app doesn't check that the `payment_method_id` and `user_id` provided actually exist.
 
-## Check records added to database -- Risk App
-The risk app writes to a single table in `risk_schema`:
+## Check records added to database -- Risk Service
+The Risk Service writes to a single table in `risk_schema`:
 ```sh
 demo_db=# select * from risk_schema.auth_request;
            auth_request_id            |               user_id                |               payee_id               |          payment_method_id           |   amount   | currency | risk_score |          created_at           
@@ -122,11 +122,19 @@ demo_db=#
 
 # Notes
 
+## Architecture
+
+The project consists of two services: A Payment Service, which provides a REST API, and a Risk Service, which receives request to determine the risk associated with a payment. In this project the Risk Service is always invoked by the Payment Service.
+
+
+[![](docs/payment_demo-architecture.drawio.png)]()
+
 ## Data Model
 
 The diagram below describes the data model for both services. On the left is the data model for the payment REST service, and on the right is the data model for the Risk service. In the current implementation each service has its own schema and both services share the same database instance.
 
 [![](docs/payment_demo-data-model.drawio.png)]()
+
 
 
 # Contact
