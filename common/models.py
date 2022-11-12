@@ -40,12 +40,12 @@ class PaymentMethod(BaseModel):
 
 
 class APIUser(BaseModel):
-    first: str = None
-    last: str = None
+    first_name: str = None
+    last_name: str = None
 
 
 class User(BaseModel):
     user_id: UUID
-    first: str = None
-    last: str = None
+    first_name: str = None
+    last_name: str = None
 
