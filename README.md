@@ -126,7 +126,7 @@ demo_db=#
 
 The diagram below describes the data model for both services. On the left is the data model for the payment REST service, and on the right is the data model for the Risk service. In the current implementation each service has its own schema and both services share the same database instance.
 
-[![](/Users/ivry/development/projects/payment_demo/docs/data-model.png)](https://drive.google.com/file/d/1p-KmPV9WrZDf7r-erN1_fB6PYR2Bf3KE/view?usp=sharing)
+[![](docs/data-model.png)]()
 
 
 # Contact
