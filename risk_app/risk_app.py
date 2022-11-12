@@ -14,9 +14,6 @@ def process():
             'localhost:9092'
     )
 
-    bootstrap_server = 'broker:9092'
-    print(bootstrap_server)
-
     consumer = KafkaConsumer('payment_request', bootstrap_servers=[bootstrap_server])
 
     for message in consumer:
