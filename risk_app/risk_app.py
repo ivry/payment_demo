@@ -28,7 +28,7 @@ def process():
             try:
                 postgres_utils.insert(conn, 'auth_request', auth_request.dict())
             except psycopg2.errors.UniqueViolation as e:
-                # ignore duplicate message
+                # We are silently ignoring duplicate message. We should log them though (beyond this scope)
                 pass
             except Exception as e:
                 # Other error

@@ -12,7 +12,7 @@ ENV PATH="./venv/bin:$PATH"
 WORKDIR /usr/app
 
 RUN python -m venv /opt/venv
-COPY ./payment_app/requirements.txt /usr/app/requirements.txt
+COPY ./common/requirements.txt /usr/app/requirements.txt
 RUN pip install -r requirements.txt
 
 COPY ./payment_app .
@@ -29,6 +29,8 @@ ENV DB_SCHEMA_RISK=risk_schema
 
 ENV KAFKA_BOOTSTRAP_HOST=broker
 ENV KAFKA_BOOTSTRAP_PORT=9092
+
+ENV PAYMENT_APP_PORT=8000
 
 EXPOSE 8000
 

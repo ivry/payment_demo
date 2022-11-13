@@ -1,18 +1,11 @@
 from uuid import UUID, uuid4
 from decimal import Decimal
 from pydantic import BaseModel
-
-
-class APIPaymentRequest(BaseModel):
-    user_id: UUID
-    payee_id: UUID
-    payment_method_id: UUID
-    amount: Decimal
-    currency: str
+from typing import Optional
 
 
 class PaymentRequest(BaseModel):
-    payment_request_id: UUID
+    payment_request_id: Optional[UUID] = uuid4()
     user_id: UUID
     payee_id: UUID
     payment_method_id: UUID
@@ -30,22 +23,13 @@ class AuthRequest(BaseModel):
     risk_score: float = 0
 
 
-class APIPaymentMethod(BaseModel):
-    name: str = None
-
-
 class PaymentMethod(BaseModel):
-    payment_method_id: UUID
+    payment_method_id: Optional[UUID] = uuid4()
     name: str = None
-
-
-class APIUser(BaseModel):
-    first_name: str = None
-    last_name: str = None
 
 
 class User(BaseModel):
-    user_id: UUID
+    user_id: Optional[UUID] = None
     first_name: str = None
     last_name: str = None
 

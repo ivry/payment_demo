@@ -12,7 +12,8 @@ ENV PATH="./venv/bin:$PATH"
 WORKDIR /usr/app
 
 RUN python -m venv /opt/venv
-COPY ./risk_app/requirements.txt /usr/app/requirements.txt
+#COPY ./risk_app/requirements.txt /usr/app/requirements.txt
+COPY ./common/requirements.txt /usr/app/requirements.txt
 RUN pip install -r requirements.txt
 
 COPY ./risk_app .

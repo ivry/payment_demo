@@ -36,12 +36,12 @@ def get_connection(
         db_schema=None
 ):
     conn_str = "host={0} dbname={1} user={2} password={3} port={4} options='-c search_path={5}'".format(
-        db_host or os.environ['DB_HOST'],
-        db_name or os.environ['DB_NAME'],
-        db_user or os.environ['DB_USER'],
-        db_password or (os.environ['DB_PASSWORD'] if 'DB_PASSWORD' in os.environ else None),
-        db_port or os.environ['DB_PORT'],
-        db_schema or os.environ['DB_SCHEMA']
+        db_host or os.environ.get('DB_HOST'),
+        db_name or os.environ.get('DB_NAME'),
+        db_user or os.environ.get('DB_USER'),
+        db_password or (os.environ.get('DB_PASSWORD') if 'DB_PASSWORD' in os.environ else None),
+        db_port or os.environ.get('DB_PORT'),
+        db_schema or os.environ.get('DB_SCHEMA')
     )
 
     try:

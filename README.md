@@ -4,7 +4,7 @@
 
 ## Prerequisites
 * Docker
-* Postman (optional)
+* curl
 
 ## Instructions
 
@@ -89,36 +89,145 @@ demo_db=# \dt
 
 ```
 
-# Test / Run  
+# Run  
 
-## Creating payments, users and payment methods
-If using Postman, import the file `./docs/payment_demo.postman_collection` into Postman.
-The file contains four examples for creating a user / retrieving all users, creating a payment method / retrieving all payment methods and creating a payment / retrieving all payments
-
-Note that to simplify the creation of payments, the app doesn't check that the `payment_method_id` and `user_id` provided actually exist.
-
-## Check records added to database -- Risk Service
-The Risk Service writes to a single table in `risk_schema`:
+## Create a user A
+A user can be created with or without a `user_id`. If `user_id` is not provided then a random UUID will be generated.
 ```sh
-demo_db=# select * from risk_schema.auth_request;
-           auth_request_id            |               user_id                |               payee_id               |          payment_method_id           |   amount   | currency | risk_score |          created_at           
---------------------------------------+--------------------------------------+--------------------------------------+--------------------------------------+------------+----------+------------+-------------------------------
- ad5f0e72-c982-4995-b675-fc606f08c9d9 | 996e3f78-d4b2-4cf8-b5b5-211e2b1092d4 | 42382de3-632c-4891-84b5-dc7be5bcacc5 | 7cda23ab-a898-43c3-bfc3-0c0258646313 | 300.000000 | USD      |         67 | 2022-11-12 01:14:52.714083+00
- 3200cba8-b188-4941-bee6-0411bf3760bf | 6681afd1-ca07-4141-8110-e6b5562d2830 | 82a13262-0706-40b4-9637-6fbf3669a5c7 | 92f76bc8-9b97-4d32-a6f7-b312155d1b0a | 787.000000 | USD      |         44 | 2022-11-12 01:34:17.976965+00
- 6a79e3a7-9b99-422d-83c3-8ec0b41c3e10 | cb2c677e-a19a-47bb-a4f0-5ab29bca645d | 2a4e5a74-2caa-47fc-93c7-e87f41f15f0f | 1be9d251-8888-4659-bd3e-7d119d578e53 | 245.000000 | USD      |         62 | 2022-11-12 01:34:18.728358+00
- 76023ddc-69b0-4ddb-b283-c6cca33d8919 | e2c42c53-73a3-4d3b-8289-5d8feea1c2df | d6852bf3-eba2-424a-8688-a1c2009000ec | 0cef94cb-7504-4500-9329-9e761c30eded | 175.000000 | USD      |         81 | 2022-11-12 01:34:19.452703+00
- 2619a011-83ee-41a3-ad0c-d46b56396b1d | e31ac9f7-35d5-4162-9a69-747aa417f3fa | 1a204580-e3e9-4cff-b15e-008200ac9f08 | 14c79fae-0b91-4c21-87d5-4271d729b630 | 626.000000 | USD      |          5 | 2022-11-12 01:34:20.2001+00
- 08df812b-4bf5-4a1e-9065-e96cdbbd7553 | 17ad376c-d6a8-4533-860b-d4a5d0358e29 | 7d55b377-d6af-4d5b-9ab1-d3d833092f22 | c232552f-8e59-4764-b010-d521c0ea211b | 910.000000 | USD      |         78 | 2022-11-12 01:34:20.898162+00
- 62a2d897-fb8b-4365-9d06-d1f14d4a818d | 9ba784e8-a0c1-4f45-a8c6-8580cfe2985d | a552d0f2-672f-4f7c-8f38-eb3e5ee889ba | 46876cda-9d94-4f9c-9edf-bedcf1b3a9e8 | 489.000000 | USD      |         25 | 2022-11-12 01:34:21.644713+00
- 6825a7d9-9139-41f9-841b-045d3912341d | 2460efa8-a3a1-4dae-8136-b7a70fe66cad | e87cf3bd-5208-4cf9-abbf-8a1e57866232 | 0314fcf9-00d3-42ee-876f-7e371600679d | 474.000000 | USD      |         92 | 2022-11-12 01:34:22.37513+00
- 310da392-f9a7-4a60-a40f-51c19f92b296 | 9c6eb990-cb84-4526-b3c5-a8ca55e56e41 | 18103cd8-584a-4cd0-bb48-e4b5b130f761 | 92ca44f5-e5e6-4796-a09c-ecd0394d7bb0 | 568.000000 | USD      |         18 | 2022-11-12 01:34:23.093675+00
- 940810a2-af61-43ec-b2ef-f22f0c0bac02 | 5bc4d09e-6026-4c38-bfb8-74454b48634c | 87e2b90f-bdbc-4ab0-b398-2c0ad1c18c7a | aa647528-8635-4415-ad66-f1a1f7bffe6b | 385.000000 | USD      |         59 | 2022-11-12 01:34:23.827773+00
- 5dae7ee3-a268-4048-8e44-4a4132ccabea | c528083e-32dc-45b6-8c1b-af11d6db39b7 | 859bc753-6c5e-44cf-a6d3-266d945a1fa7 | 3dc0f336-c4d1-4e6e-b006-3b43f321a736 | 351.000000 | USD      |         70 | 2022-11-12 01:34:24.559134+00
-(11 rows)
+curl -X POST localhost:8000/users -H 'Content-Type: application/json' -d '{"user_id":"f9944e44-0683-4d1d-9ac4-b0c973d21cad", "first_name":"Vita","last_name":"Fay"}'
+```
 
-demo_db=# 
+## Create a user B
+```sh
+curl -X POST localhost:8000/users -H 'Content-Type: application/json' -d '{"user_id":"bf6538e6-700c-491a-807b-90fa620e5f03", "first_name":"Leonardo","last_name":"Kreiger"}'
+```
+
+## Create a payment method
+```sh
+curl -X POST localhost:8000/payment_methods -H 'Content-Type: application/json' -d '{"payment_method_id":"d4482132-5285-4dd6-83db-422ea50e9489", "name": "debit_card"}'
+```
+
+## Create a Payment (user A pays User B)
+```sh
+curl -X POST localhost:8000/payments -H 'Content-Type: application/json' -d '{"payment_request_id":"e3190de3-1791-4260-9f19-e5761602aaa7", "user_id": "f9944e44-0683-4d1d-9ac4-b0c973d21cad", "payee_id": "bf6538e6-700c-491a-807b-90fa620e5f03", "payment_method_id": "d4482132-5285-4dd6-83db-422ea50e9489", "amount": "6.00", "currency": "USD"}'
+```
+
+## Retrieve users
+```sh
+~ % curl localhost:8000/users | json_pp
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   283  100   283    0     0  16014      0 --:--:-- --:--:-- --:--:-- 23583
+[
+   {
+      "created_at" : "2022-11-13T02:18:06.228625+00:00",
+      "first_name" : "Vita",
+      "last_name" : "Fay",
+      "user_id" : "f9944e44-0683-4d1d-9ac4-b0c973d21cad"
+   },
+   {
+      "created_at" : "2022-11-13T02:18:09.796295+00:00",
+      "first_name" : "Leonardo",
+      "last_name" : "Kreiger",
+      "user_id" : "bf6538e6-700c-491a-807b-90fa620e5f03"
+   }
+]
 
 ```
+
+## Retrieve payment methods
+```sh
+~ % curl localhost:8000/payment_methods | json_pp
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   130  100   130    0     0   7546      0 --:--:-- --:--:-- --:--:-- 10833
+[
+   {
+      "created_at" : "2022-11-13T02:18:17.650276+00:00",
+      "name" : "debit_card",
+      "payment_method_id" : "d4482132-5285-4dd6-83db-422ea50e9489"
+   }
+]
+
+```
+
+## Retrieve payments
+```sh
+~ % curl localhost:8000/payments | json_pp 
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   299  100   299    0     0  18155      0 --:--:-- --:--:-- --:--:-- 27181
+[
+   {
+      "amount" : 6,
+      "created_at" : "2022-11-13T02:18:26.796974+00:00",
+      "currency" : "USD",
+      "payee_id" : "bf6538e6-700c-491a-807b-90fa620e5f03",
+      "payment_method_id" : "d4482132-5285-4dd6-83db-422ea50e9489",
+      "payment_request_id" : "e3190de3-1791-4260-9f19-e5761602aaa7",
+      "user_id" : "f9944e44-0683-4d1d-9ac4-b0c973d21cad"
+   }
+]
+
+```
+
+### Note that there is no REST API to retrieve information from the risk service
+
+# Examples
+Examples have been provided in `./docs/add_users.sh`, `./docs/add_payment_methods.sh`, `./docs/create_payments.sh`
+
+# Check Database
+
+## Connect to Postgres
+```sh
+docker exec -it postgres_db psql -d demo_db -U demo_user 
+```
+
+## Payment Service
+### `user` table
+```sh
+demo_db=# select * from payment_schema.user;
+               user_id                | first_name | last_name |          created_at           
+--------------------------------------+------------+-----------+-------------------------------
+ f9944e44-0683-4d1d-9ac4-b0c973d21cad | Vita       | Fay       | 2022-11-13 01:57:17.998883+00
+ bf6538e6-700c-491a-807b-90fa620e5f03 | Leonardo   | Kreiger   | 2022-11-13 01:57:25.677207+00
+(2 rows)
+
+```
+
+### `payment_method` table
+```sh
+demo_db=# select * from payment_schema.payment_method;
+          payment_method_id           |    name    |          created_at           
+--------------------------------------+------------+-------------------------------
+ d4482132-5285-4dd6-83db-422ea50e9489 | debit_card | 2022-11-13 01:57:32.150367+00
+(1 row)
+
+```
+
+### `payment_request` table
+```sh
+demo_db=# select * from payment_schema.payment_request;
+          payment_request_id          |               user_id                |               payee_id               |          payment_method_id           |  amount  | currency |          created_at           
+--------------------------------------+--------------------------------------+--------------------------------------+--------------------------------------+----------+----------+-------------------------------
+ e3190de3-1791-4260-9f19-e5761602aaa7 | f9944e44-0683-4d1d-9ac4-b0c973d21cad | bf6538e6-700c-491a-807b-90fa620e5f03 | d4482132-5285-4dd6-83db-422ea50e9489 | 6.000000 | USD      | 2022-11-13 01:57:40.575617+00
+(1 row)
+
+```
+
+## Risk Service
+
+### `auth_request` table
+```sh
+demo_db=# select * from risk_schema.auth_request;
+           auth_request_id            |               user_id                |               payee_id               |          payment_method_id           |  amount  | currency | risk_score |          created_at          
+--------------------------------------+--------------------------------------+--------------------------------------+--------------------------------------+----------+----------+------------+------------------------------
+ e3190de3-1791-4260-9f19-e5761602aaa7 | f9944e44-0683-4d1d-9ac4-b0c973d21cad | bf6538e6-700c-491a-807b-90fa620e5f03 | d4482132-5285-4dd6-83db-422ea50e9489 | 6.000000 | USD      |         33 | 2022-11-13 01:57:40.73892+00
+(1 row)
+
+```
+
+
 
 # Notes
 
