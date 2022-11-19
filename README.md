@@ -299,7 +299,7 @@ select * from risk_schema.auth_request;
 ### POST /users
 - Create a new user
 - if user_id is not provided then it will be created by the service
-```json
+```python
 {
   user_id: Optional[UUID]
   first_name: string
