@@ -299,7 +299,7 @@ select * from risk_schema.auth_request;
 ### POST /users
 - Create a new user
 - if user_id is not provided then it will be created by the service
-```python
+```json lines
 {
   user_id: Optional[UUID]
   first_name: string
@@ -310,7 +310,7 @@ select * from risk_schema.auth_request;
 ### POST /payment_methods
 - Create a new payment method
 - if payment_method_id is not provided then it will be created by the service
-```json
+```json lines
 {
   payment_method_id: Optional[UUID]
   name: string
@@ -322,7 +322,7 @@ select * from risk_schema.auth_request;
 - if payment_id is not provided then it will be created by the service
 - payee_id and user_id must be valid users
 - payment_method_id must be a valid payment method
-```json
+```json lines
 {
     payment_request_id: Optional[UUID]
     user_id: UUID
