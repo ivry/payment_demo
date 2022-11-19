@@ -5,7 +5,7 @@ from typing import Optional
 
 
 class PaymentRequest(BaseModel):
-    payment_request_id: Optional[UUID] = uuid4()
+    payment_request_id: Optional[UUID]
     user_id: UUID
     payee_id: UUID
     payment_method_id: UUID
@@ -24,7 +24,7 @@ class AuthRequest(BaseModel):
 
 
 class PaymentMethod(BaseModel):
-    payment_method_id: Optional[UUID] = uuid4()
+    payment_method_id: Optional[UUID]
     name: str = None
 
 
