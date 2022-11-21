@@ -148,7 +148,7 @@ curl -X POST localhost:8000/users -H 'Content-Type: application/json' -d '{"user
 
 ## Create a payment method
 ```sh
-curl -X POST localhost:8000/payment_methods -H 'Content-Type: application/json' -d '{"payment_method_id":"d4482132-5285-4dd6-83db-422ea50e9489", "name": "debit_card"}'
+curl -X POST localhost:8000/payment_methods -H 'Content-Type: application/json' -d '{"payment_method_id":"d4482132-5285-4dd6-83db-422ea50e9489", "name": "DEBIT_CARD"}'
 ```
 
 ## Create a Payment (user A pays User B)
@@ -296,10 +296,10 @@ select * from risk_schema.auth_request;
 | GET        | /payments            | Get a list of all payment requests |
 
 
-### POST /users
+### `POST /users`
 - Create a new user
 - if user_id is not provided then it will be created by the service
-```json lines
+```sh
 {
   user_id: Optional[UUID]
   first_name: string
@@ -307,22 +307,22 @@ select * from risk_schema.auth_request;
 }
 ```
 
-### POST /payment_methods
+### `POST /payment_methods`
 - Create a new payment method
 - if payment_method_id is not provided then it will be created by the service
-```json lines
+```sh
 {
   payment_method_id: Optional[UUID]
   name: string
 }
 ```
 
-### POST /payments
+### `POST /payments`
 - Create a new payment request
 - if payment_id is not provided then it will be created by the service
 - payee_id and user_id must be valid users
 - payment_method_id must be a valid payment method
-```json lines
+```sh
 {
     payment_request_id: Optional[UUID]
     user_id: UUID
