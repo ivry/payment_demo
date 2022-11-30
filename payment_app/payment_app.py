@@ -70,13 +70,13 @@ async def create_payment(payment_request: PaymentRequest):
 
         insert_raises(conn, 'payment_request', payment_request.dict())
 
-    bootstrap_server = (
-            f'{os.environ.get("KAFKA_BOOTSTRAP_HOST")}:{os.environ.get("KAFKA_BOOTSTRAP_PORT")}' or
-            'localhost:9092'
-    )
+        bootstrap_server = (
+                f'{os.environ.get("KAFKA_BOOTSTRAP_HOST")}:{os.environ.get("KAFKA_BOOTSTRAP_PORT")}' or
+                'localhost:9092'
+        )
 
-    producer = KafkaProducer(bootstrap_servers=[bootstrap_server])
-    producer.send('payment_request', bytes(payment_request.json(), 'utf-8'))
+        producer = KafkaProducer(bootstrap_servers=[bootstrap_server])
+        producer.send('payment_request', bytes(payment_request.json(), 'utf-8'))
 
     return payment_request
 
